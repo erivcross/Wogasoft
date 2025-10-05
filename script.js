@@ -32,7 +32,55 @@ document.querySelectorAll('.nav-menu a').forEach(link => {
             span.style.transform = 'none';
             span.style.opacity = '1';
         });
+        
+        // Restore body scroll
+        document.body.style.overflow = '';
     });
+});
+
+// Close menu when clicking outside (mobile improvement)
+document.addEventListener('click', (e) => {
+    if (!hamburger.contains(e.target) && !navMenu.contains(e.target) && navMenu.classList.contains('active')) {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+        
+        // Resetar animação do hambúrguer
+        const spans = hamburger.querySelectorAll('span');
+        spans.forEach(span => {
+            span.style.transform = 'none';
+            span.style.opacity = '1';
+        });
+        
+        // Restore body scroll
+        document.body.style.overflow = '';
+    }
+});
+
+// Close menu on escape key (mobile improvement)
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+        hamburger.classList.remove('active');
+        navMenu.classList.remove('active');
+        
+        // Resetar animação do hambúrguer
+        const spans = hamburger.querySelectorAll('span');
+        spans.forEach(span => {
+            span.style.transform = 'none';
+            span.style.opacity = '1';
+        });
+        
+        // Restore body scroll
+        document.body.style.overflow = '';
+    }
+});
+
+// Prevent body scroll when mobile menu is open
+hamburger.addEventListener('click', () => {
+    if (navMenu.classList.contains('active')) {
+        document.body.style.overflow = 'hidden';
+    } else {
+        document.body.style.overflow = '';
+    }
 });
 
 // Header com scroll
@@ -436,4 +484,192 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     images.forEach(img => imageObserver.observe(img));
+});
+
+// Mobile Touch Improvements
+document.addEventListener('DOMContentLoaded', () => {
+    // Touch-friendly interactions
+    const touchElements = document.querySelectorAll('.btn, .feature-card, .pricing-card, .contact-item, .faq-item');
+    
+    touchElements.forEach(element => {
+        // Add touch feedback
+        element.addEventListener('touchstart', function() {
+            this.style.transform = 'scale(0.98)';
+            this.style.transition = 'transform 0.1s ease';
+        });
+        
+        element.addEventListener('touchend', function() {
+            this.style.transform = 'scale(1)';
+        });
+        
+        element.addEventListener('touchcancel', function() {
+            this.style.transform = 'scale(1)';
+        });
+    });
+    
+    // Improved scroll behavior for mobile
+    let isScrolling = false;
+    window.addEventListener('scroll', () => {
+        if (!isScrolling) {
+            window.requestAnimationFrame(() => {
+                // Add smooth scroll behavior
+                document.body.style.scrollBehavior = 'smooth';
+                isScrolling = false;
+            });
+            isScrolling = true;
+        }
+    });
+    
+    // Prevent zoom on double tap for buttons
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function (event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
+    
+    // Improve form interactions on mobile
+    const inputs = document.querySelectorAll('input, textarea, select');
+    inputs.forEach(input => {
+        input.addEventListener('focus', function() {
+            // Scroll to input on mobile to avoid keyboard covering
+            if (window.innerWidth <= 768) {
+                setTimeout(() => {
+                    this.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'center'
+                    });
+                }, 300);
+            }
+        });
+    });
+    
+    // Add swipe gestures for mobile navigation (optional)
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    document.addEventListener('touchstart', e => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    
+    document.addEventListener('touchend', e => {
+        touchEndX = e.changedTouches[0].screenX;
+        handleSwipe();
+    });
+    
+    function handleSwipe() {
+        const swipeThreshold = 50;
+        const diff = touchStartX - touchEndX;
+        
+        // Swipe left to open menu, swipe right to close
+        if (Math.abs(diff) > swipeThreshold) {
+            if (diff > 0 && window.innerWidth <= 768) {
+                // Swipe left - open menu
+                if (!navMenu.classList.contains('active')) {
+                    hamburger.click();
+                }
+            } else if (diff < 0 && navMenu.classList.contains('active')) {
+                // Swipe right - close menu
+                hamburger.click();
+            }
+        }
+    }
+    
+    // Performance optimization for mobile
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    
+    if (prefersReducedMotion.matches) {
+        // Disable animations for users who prefer reduced motion
+        document.documentElement.style.setProperty('--animation-duration', '0s');
+        document.documentElement.style.setProperty('--transition-duration', '0s');
+    }
+    
+    // Add loading states for better UX
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            if (this.type === 'submit' || this.classList.contains('submit-btn')) {
+                // Add loading state
+                const originalText = this.innerHTML;
+                this.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando...';
+                this.disabled = true;
+                
+                // Simulate loading (remove in production)
+                setTimeout(() => {
+                    this.innerHTML = originalText;
+                    this.disabled = false;
+                }, 2000);
+            }
+        });
+    });
+    
+    // Optimize images for mobile
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        img.addEventListener('load', function() {
+            this.style.opacity = '1';
+            this.style.transition = 'opacity 0.3s ease';
+        });
+        
+        // Add error handling
+        img.addEventListener('error', function() {
+            this.style.display = 'none';
+            console.warn('Image failed to load:', this.src);
+        });
+    });
+    
+    // Add viewport meta tag validation
+    const viewport = document.querySelector('meta[name="viewport"]');
+    if (!viewport) {
+        const meta = document.createElement('meta');
+        meta.name = 'viewport';
+        meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+        document.head.appendChild(meta);
+    }
+    
+    // Enhanced table scrolling for mobile
+    const comparisonTable = document.querySelector('.comparison-table');
+    if (comparisonTable) {
+        let isScrolling = false;
+        let scrollTimeout;
+        
+        comparisonTable.addEventListener('scroll', function() {
+            if (!isScrolling) {
+                isScrolling = true;
+                
+                // Add visual feedback during scroll
+                this.style.transition = 'transform 0.1s ease';
+                
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    isScrolling = false;
+                    this.style.transition = '';
+                }, 150);
+            }
+        });
+        
+        // Add momentum scrolling for iOS
+        comparisonTable.style.webkitOverflowScrolling = 'touch';
+        
+        // Hide scroll indicator after user starts scrolling
+        let hasScrolled = false;
+        comparisonTable.addEventListener('scroll', function() {
+            if (!hasScrolled) {
+                hasScrolled = true;
+                const indicator = document.querySelector('.premium-comparison::after');
+                if (indicator) {
+                    indicator.style.opacity = '0';
+                }
+            }
+        });
+        
+        // Add snap scrolling for better UX
+        comparisonTable.style.scrollSnapType = 'x mandatory';
+        const comparisonPlans = document.querySelectorAll('.comparison-plan');
+        comparisonPlans.forEach(plan => {
+            plan.style.scrollSnapAlign = 'start';
+        });
+    }
 });
