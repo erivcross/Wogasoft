@@ -5,6 +5,19 @@ const navMenu = document.querySelector('.nav-menu');
 hamburger.addEventListener('click', () => {
     hamburger.classList.toggle('active');
     navMenu.classList.toggle('active');
+    
+    // Animar as linhas do hambúrguer
+    const spans = hamburger.querySelectorAll('span');
+    spans.forEach((span, index) => {
+        if (hamburger.classList.contains('active')) {
+            if (index === 0) span.style.transform = 'rotate(45deg) translate(5px, 5px)';
+            if (index === 1) span.style.opacity = '0';
+            if (index === 2) span.style.transform = 'rotate(-45deg) translate(7px, -6px)';
+        } else {
+            span.style.transform = 'none';
+            span.style.opacity = '1';
+        }
+    });
 });
 
 // Fechar menu ao clicar em um link
@@ -12,6 +25,13 @@ document.querySelectorAll('.nav-menu a').forEach(link => {
     link.addEventListener('click', () => {
         hamburger.classList.remove('active');
         navMenu.classList.remove('active');
+        
+        // Resetar animação do hambúrguer
+        const spans = hamburger.querySelectorAll('span');
+        spans.forEach(span => {
+            span.style.transform = 'none';
+            span.style.opacity = '1';
+        });
     });
 });
 
@@ -21,9 +41,11 @@ window.addEventListener('scroll', () => {
     if (window.scrollY > 100) {
         header.style.background = 'rgba(255, 255, 255, 0.98)';
         header.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.1)';
+        header.style.backdropFilter = 'blur(20px)';
     } else {
         header.style.background = 'rgba(255, 255, 255, 0.95)';
         header.style.boxShadow = 'none';
+        header.style.backdropFilter = 'blur(20px)';
     }
 });
 
@@ -249,7 +271,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Efeito de hover nos cards
 document.addEventListener('DOMContentLoaded', () => {
-    const cards = document.querySelectorAll('.feature, .contact-item, .screenshot');
+    const cards = document.querySelectorAll('.feature-card, .pricing-card, .contact-item, .faq-item');
     
     cards.forEach(card => {
         card.addEventListener('mouseenter', function() {
@@ -258,6 +280,142 @@ document.addEventListener('DOMContentLoaded', () => {
         
         card.addEventListener('mouseleave', function() {
             this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+});
+
+// Animação dos ícones flutuantes
+document.addEventListener('DOMContentLoaded', () => {
+    const floatingIcons = document.querySelectorAll('.floating-icon');
+    
+    floatingIcons.forEach((icon, index) => {
+        icon.style.animationDelay = `${index * 0.5}s`;
+        icon.style.animationDuration = `${3 + index * 0.5}s`;
+    });
+});
+
+// Efeito especial no panda no foguete
+document.addEventListener('DOMContentLoaded', () => {
+    const pandaImage = document.querySelector('.panda-rocket-image');
+    
+    if (pandaImage) {
+        // Adicionar efeito de brilho ocasional
+        setInterval(() => {
+            pandaImage.style.filter = 'drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3)) brightness(1.1)';
+            setTimeout(() => {
+                pandaImage.style.filter = 'drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3))';
+            }, 500);
+        }, 8000);
+        
+        // Efeito de hover mais elaborado
+        pandaImage.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.1) rotate(5deg)';
+            this.style.filter = 'drop-shadow(0 25px 50px rgba(251, 191, 36, 0.4)) brightness(1.2)';
+        });
+        
+        pandaImage.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1) rotate(0deg)';
+            this.style.filter = 'drop-shadow(0 20px 40px rgba(0, 0, 0, 0.3))';
+        });
+    }
+});
+
+// Interação com os planos de preço
+document.addEventListener('DOMContentLoaded', () => {
+    const pricingCards = document.querySelectorAll('.pricing-card');
+    
+    pricingCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remover classe ativa de todos os cards
+            pricingCards.forEach(c => c.classList.remove('selected'));
+            
+            // Adicionar classe ativa ao card clicado
+            this.classList.add('selected');
+            
+            // Adicionar efeito visual
+            this.style.borderColor = '#6366f1';
+            this.style.boxShadow = '0 20px 25px -5px rgba(99, 102, 241, 0.3)';
+            
+            // Resetar outros cards
+            pricingCards.forEach(c => {
+                if (c !== this) {
+                    c.style.borderColor = '#e5e7eb';
+                    c.style.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1)';
+                }
+            });
+        });
+    });
+});
+
+// Animação do botão de download
+document.addEventListener('DOMContentLoaded', () => {
+    const downloadBtn = document.querySelector('.download-btn');
+    
+    if (downloadBtn) {
+        downloadBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Adicionar efeito de clique
+            this.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+            }, 150);
+            
+            // Simular redirecionamento
+            showNotification('Redirecionando para a Google Play Store...', 'success');
+            
+            setTimeout(() => {
+                window.open('https://play.google.com/store/apps/details?id=com.wogasoft.wobet', '_blank');
+            }, 1000);
+        });
+    }
+});
+
+// FAQ interativo
+document.addEventListener('DOMContentLoaded', () => {
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    faqItems.forEach(item => {
+        const question = item.querySelector('h4');
+        const answer = item.querySelector('p');
+        
+        // Criar botão de toggle
+        const toggleBtn = document.createElement('button');
+        toggleBtn.innerHTML = '<i class="fas fa-chevron-down"></i>';
+        toggleBtn.className = 'faq-toggle';
+        toggleBtn.style.cssText = `
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1rem;
+            color: #6b7280;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        `;
+        
+        item.style.position = 'relative';
+        item.appendChild(toggleBtn);
+        
+        // Inicialmente ocultar resposta
+        answer.style.display = 'none';
+        answer.style.maxHeight = '0';
+        answer.style.overflow = 'hidden';
+        answer.style.transition = 'max-height 0.3s ease';
+        
+        toggleBtn.addEventListener('click', function() {
+            const isOpen = answer.style.display === 'block';
+            
+            if (isOpen) {
+                answer.style.display = 'none';
+                answer.style.maxHeight = '0';
+                this.style.transform = 'rotate(0deg)';
+            } else {
+                answer.style.display = 'block';
+                answer.style.maxHeight = answer.scrollHeight + 'px';
+                this.style.transform = 'rotate(180deg)';
+            }
         });
     });
 });

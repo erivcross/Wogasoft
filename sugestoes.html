@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sugestões - Wogasoft</title>
+    <meta name="description" content="Envie suas sugestões para a Wogasoft. Sua opinião é fundamental para melhorarmos nossos produtos e serviços.">
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="image/wogasoft.png">
+    <style>
+        .suggestions-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 120px 20px 60px;
+        }
+        
+        .suggestions-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .suggestions-header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 16px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .suggestions-header p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .suggestions-form {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .form-group {
+            margin-bottom: 24px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-color);
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(var(--primary-rgb), 0.3);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .suggestion-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 40px 0;
+        }
+        
+        .suggestion-type {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .suggestion-type:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary-color);
+        }
+        
+        .suggestion-type .icon {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+        }
+        
+        .suggestion-type h3 {
+            color: var(--text-color);
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+        }
+        
+        .suggestion-type p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .featured-suggestions {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            margin: 40px 0;
+        }
+        
+        .featured-suggestions h2 {
+            color: var(--primary-color);
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        
+        .suggestion-list {
+            display: grid;
+            gap: 16px;
+        }
+        
+        .suggestion-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .suggestion-item .status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .status.considering {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+        }
+        
+        .status.planned {
+            background: rgba(0, 123, 255, 0.2);
+            color: #007bff;
+        }
+        
+        .status.completed {
+            background: rgba(40, 167, 69, 0.2);
+            color: #28a745;
+        }
+        
+        .contact-info {
+            background: var(--card-background);
+            border-radius: 12px;
+            padding: 24px;
+            margin-top: 32px;
+            text-align: center;
+        }
+        
+        .contact-info h3 {
+            color: var(--primary-color);
+            margin-bottom: 16px;
+        }
+        
+        .contact-info a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .contact-info a:hover {
+            text-decoration: underline;
+        }
+        
+        .success-message {
+            background: rgba(40, 167, 69, 0.1);
+            border: 1px solid rgba(40, 167, 69, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin: 20px 0;
+            color: #28a745;
+            display: none;
+        }
+        
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .suggestions-form {
+                padding: 24px;
+            }
+            
+            .suggestions-container {
+                padding: 100px 16px 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="nav-container">
+                <div class="logo">
+                    <img src="image/wogasoft.png" alt="Wogasoft Logo" class="logo-image">
+                    <h2>Wogasoft</h2>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">Início</a></li>
+                    <li><a href="index.html#about">Sobre</a></li>
+                    <li><a href="index.html#wobet">WoBet</a></li>
+                    <li><a href="index.html#contact">Contato</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="suggestions-container">
+        <div class="suggestions-header">
+            <h1>Sugestões</h1>
+            <p>Sua opinião é fundamental para melhorarmos nossos produtos e serviços. Compartilhe suas ideias, reporte bugs ou sugira novas funcionalidades.</p>
+        </div>
+
+        <!-- Success Message -->
+        <div class="success-message" id="successMessage">
+            <i class="fas fa-check-circle"></i>
+            <strong>Obrigado!</strong> Sua sugestão foi enviada com sucesso. Analisaremos sua contribuição e entraremos em contato se necessário.
+        </div>
+
+        <!-- Suggestions Form -->
+        <form class="suggestions-form" id="suggestionsForm">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Nome *</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email *</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="category">Categoria da Sugestão *</label>
+                <select id="category" name="category" required>
+                    <option value="">Selecione uma categoria</option>
+                    <option value="feature">Nova Funcionalidade</option>
+                    <option value="improvement">Melhoria</option>
+                    <option value="bug">Reportar Bug</option>
+                    <option value="ui">Interface do Usuário</option>
+                    <option value="performance">Performance</option>
+                    <option value="accessibility">Acessibilidade</option>
+                    <option value="other">Outro</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="product">Produto/Serviço *</label>
+                <select id="product" name="product" required>
+                    <option value="">Selecione um produto</option>
+                    <option value="wobet">WoBet App</option>
+                    <option value="website">Site Wogasoft</option>
+                    <option value="development">Serviços de Desenvolvimento</option>
+                    <option value="support">Suporte</option>
+                    <option value="general">Geral</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="title">Título da Sugestão *</label>
+                <input type="text" id="title" name="title" placeholder="Descreva brevemente sua sugestão" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Descrição Detalhada *</label>
+                <textarea id="description" name="description" placeholder="Descreva sua sugestão em detalhes. Inclua informações sobre o problema atual, sua proposta de solução, e como isso beneficiaria outros usuários." required></textarea>
+            </div>
+            
+            <div class="form-group">
+                <label for="priority">Prioridade</label>
+                <select id="priority" name="priority">
+                    <option value="low">Baixa</option>
+                    <option value="medium" selected>Média</option>
+                    <option value="high">Alta</option>
+                    <option value="critical">Crítica</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="submit-btn" id="submitBtn">
+                <i class="fas fa-paper-plane"></i>
+                Enviar Sugestão
+            </button>
+        </form>
+
+        <!-- Suggestion Types -->
+        <div class="suggestion-types">
+            <div class="suggestion-type">
+                <div class="icon">
+                    <i class="fas fa-lightbulb"></i>
+                </div>
+                <h3>Nova Funcionalidade</h3>
+                <p>Tenha uma ideia para uma nova funcionalidade? Compartilhe conosco!</p>
+            </div>
+            
+            <div class="suggestion-type">
+                <div class="icon">
+                    <i class="fas fa-tools"></i>
+                </div>
+                <h3>Melhorias</h3>
+                <p>Sugira melhorias para funcionalidades existentes.</p>
+            </div>
+            
+            <div class="suggestion-type">
+                <div class="icon">
+                    <i class="fas fa-bug"></i>
+                </div>
+                <h3>Reportar Bug</h3>
+                <p>Encontrou um problema? Ajude-nos a corrigi-lo.</p>
+            </div>
+            
+            <div class="suggestion-type">
+                <div class="icon">
+                    <i class="fas fa-palette"></i>
+                </div>
+                <h3>Design & UX</h3>
+                <p>Sugestões para melhorar a experiência do usuário.</p>
+            </div>
+        </div>
+
+        <!-- Featured Suggestions -->
+        <div class="featured-suggestions">
+            <h2>Status das Sugestões</h2>
+            <div class="suggestion-list">
+                <div class="suggestion-item">
+                    <div class="status completed">Implementado</div>
+                    <div>
+                        <strong>Calculadora de SureBet Aprimorada</strong>
+                        <p>Melhorias na interface e precisão dos cálculos</p>
+                    </div>
+                </div>
+                
+                <div class="suggestion-item">
+                    <div class="status planned">Planejado</div>
+                    <div>
+                        <strong>Modo Escuro no WoBet</strong>
+                        <p>Implementação de tema escuro para melhor experiência visual</p>
+                    </div>
+                </div>
+                
+                <div class="suggestion-item">
+                    <div class="status considering">Considerando</div>
+                    <div>
+                        <strong>Integração com Mais Casas de Aposta</strong>
+                        <p>Adicionar suporte para novas plataformas de apostas</p>
+                    </div>
+                </div>
+                
+                <div class="suggestion-item">
+                    <div class="status considering">Considerando</div>
+                    <div>
+                        <strong>Relatórios Exportáveis</strong>
+                        <p>Funcionalidade para exportar relatórios em PDF/Excel</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="contact-info">
+            <h3>Outras Formas de Contato</h3>
+            <p>Precisa de suporte imediato ou tem dúvidas?</p>
+            <p><strong>Email:</strong> <a href="mailto:contato@wogasoft.com">contato@wogasoft.com</a></p>
+            <p><strong>Suporte:</strong> <a href="mailto:suporte@wogasoft.com">suporte@wogasoft.com</a></p>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="image/wogasoft.png" alt="Wogasoft Logo" class="footer-logo-image">
+                        <h3>Wogasoft</h3>
+                    </div>
+                    <p>Especialistas em desenvolvimento de aplicativos mobile inovadores para o mercado esportivo. Criamos soluções que realmente fazem a diferença na vida dos usuários.</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Produtos</h4>
+                    <ul>
+                        <li><a href="index.html#wobet">WoBet</a></li>
+                        <li><a href="index.html#about">Sobre Nós</a></li>
+                        <li><a href="index.html#download">Download</a></li>
+                        <li><a href="index.html#contact">Contato</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Serviços</h4>
+                    <ul>
+                        <li><a href="index.html#about">Desenvolvimento Mobile</a></li>
+                        <li><a href="index.html#about">Análise de Dados</a></li>
+                        <li><a href="index.html#about">Calculadoras</a></li>
+                        <li><a href="index.html#about">Soluções em Nuvem</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Legal</h4>
+                    <ul>
+                        <li><a href="termos-de-uso.html">Termos de Uso</a></li>
+                        <li><a href="politica-de-privacidade.html">Política de Privacidade</a></li>
+                        <li><a href="politica-reembolso.html">Política de Reembolso</a></li>
+                        <li><a href="lgpd.html">LGPD</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contato</h4>
+                    <ul>
+                        <li><a href="mailto:contato@wogasoft.com">contato@wogasoft.com</a></li>
+                        <li><a href="index.html#contact">Fale Conosco</a></li>
+                        <li><a href="mailto:suporte@wogasoft.com">suporte@wogasoft.com</a></li>
+                        <li><a href="sugestoes.html">Sugestões</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="footer-bottom-content">
+                    <p>&copy; 2024 Wogasoft. Todos os direitos reservados.</p>
+                    <div class="footer-bottom-links">
+                        <span>Feito com ❤️ no Brasil</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // Form submission handling
+        document.getElementById('suggestionsForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const successMessage = document.getElementById('successMessage');
+            
+            // Disable button and show loading
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
+            
+            // Simulate form submission
+            setTimeout(() => {
+                // Reset form
+                this.reset();
+                
+                // Show success message
+                successMessage.style.display = 'block';
+                
+                // Reset button
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Enviar Sugestão';
+                
+                // Hide success message after 5 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 5000);
+                
+                // Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }, 2000);
+        });
+        
+        // Auto-resize textarea
+        document.getElementById('description').addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
+    </script>
+</body>
+</html>
